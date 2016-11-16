@@ -46,21 +46,16 @@
   		<artifactId>liblinear</artifactId>
   		<version>1.95</version>
   	</dependency>
-  	<dependency>
-  		<groupId>org.mapdb</groupId>
-  		<artifactId>mapdb</artifactId>
-  		<version>3.0.2</version>
-  		<classifier>test-sources</classifier>
-  	</dependency>
+ 
   	<dependency>
   		<groupId>org.neo4j</groupId>
   		<artifactId>neo4j</artifactId>
-  		<version>3.1.0-M10</version>
+  		<version>1.8</version>
   	</dependency>
   	<dependency>
   		<groupId>org.neo4j</groupId>
   		<artifactId>neo4j-kernel</artifactId>
-  		<version>3.1.0-M10</version>
+  		<version>1.8</version>
   	</dependency>
 
   	<dependency>
@@ -84,5 +79,12 @@
   		<artifactId>stanford-corenlp</artifactId>
   		<version>3.6.0</version>
   	</dependency>
+  	<!-- https://mvnrepository.com/artifact/org.mapdb/mapdb -->
+<dependency>
+    <groupId>org.mapdb</groupId>
+    <artifactId>mapdb</artifactId>
+    <version>1.0.7</version>
+</dependency>
+  	
   </dependencies>
 </project>

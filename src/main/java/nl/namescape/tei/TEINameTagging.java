@@ -18,7 +18,7 @@ import java.io.*;
 
 import nl.namescape.BIOOutput;
 import nl.namescape.stats.CooccurrenceGraph;
-import nl.namescape.tagging.LBJAPIClient;
+//import nl.namescape.tagging.LBJAPIClient;
 import nl.namescape.tokenizer.TEITokenizer;
 import nl.namescape.util.Proxy;
 import nl.namescape.util.StopWatch;

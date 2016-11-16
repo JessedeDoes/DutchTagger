@@ -18,7 +18,7 @@ public class NERTWrapper
 		input = p.getProperty("input");
 		output = p.getProperty("output");
 		//p.setProperty("loadClassifier",)
-		stan.addNERTClassifier(p);
+		// stan.addNERTClassifier(p);
 		//stan.addClassifier(classifier);
 		DocumentTagger dt = new DocumentTagger(stan);
 		dt.tokenize = true; //options.getOptionBoolean("tokenize", true);
