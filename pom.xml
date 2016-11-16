@@ -10,7 +10,7 @@
       <configuration>
         <archive>
           <manifest>
-            <mainClass>org.ivdnt.openconvert.converters.OpenConvert</mainClass>
+            <mainClass>nl.namescape.tagging.ImpactTaggerLemmatizerClient</mainClass>
           </manifest>
         </archive>
         <descriptorRefs>
@@ -85,6 +85,18 @@
     <artifactId>mapdb</artifactId>
     <version>1.0.7</version>
 </dependency>
-  	
+  
+<dependency>
+    <groupId>laml</groupId>
+    <artifactId>laml</artifactId>
+    <version>1.5</version>
+    <scope>system</scope>
+    <systemPath>${project.basedir}/lib/LAML-1.5.jar</systemPath>
+</dependency>
+ <dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.12</version>
+</dependency>
   </dependencies>
 </project>

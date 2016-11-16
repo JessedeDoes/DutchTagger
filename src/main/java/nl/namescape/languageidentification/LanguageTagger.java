@@ -12,9 +12,8 @@ import org.ivdnt.openconvert.filehandling.SimpleInputOutputProcess;
 
 import org.w3c.dom.*;
 
-import com.cybozu.labs.langdetect.Detector;
-import com.cybozu.labs.langdetect.DetectorFactory;
-import com.cybozu.labs.langdetect.LangDetectException;
+import nl.namescape.languageidentification.cybozu.*;
+
 
 import impact.ee.tagger.BasicTagger;
 

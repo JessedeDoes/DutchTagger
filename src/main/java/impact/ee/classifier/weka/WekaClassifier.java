@@ -120,7 +120,7 @@ public class WekaClassifier implements Classifier
 
 	public weka.core.Instance makeWekaInstance(Instance i)
 	{
-		weka.core.Instance instance = new weka.core.Instance(features.size());
+		weka.core.Instance instance = new weka.core.DenseInstance(features.size());
 		// org.ivdnt.openconvert.log.ConverterLog.defaultLog.println("make instance for " + i);
 		for (int j=0; j < features.size(); j++)
 		{
