@@ -19,9 +19,9 @@ import java.util.*;
 public class ClusterFeature extends Feature
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	// maybe it is better not to have a transient map, just store the stuff in the model?
-	
+
 	public Map<String,String> word2cluster = new HashMap<String,String>();
 	private boolean initialized = false;
 
@@ -33,7 +33,7 @@ public class ClusterFeature extends Feature
 
 	public int k;
 	public int depth;
-	
+
 	public ClusterFeature(String fileName, int depth, int k)
 	{
 		this.name = "cluster_" + depth + "_" + k;
@@ -41,7 +41,7 @@ public class ClusterFeature extends Feature
 		this.depth = depth;
 		initLexicon(fileName);
 	}
-	
+
 	public String getValue(Object o)
 	{
 		try
@@ -58,7 +58,7 @@ public class ClusterFeature extends Feature
 		}
 		return null;
 	}
-	
+
 	public void readClustersFromFile()
 	{
 		initLexicon(SandersClusterFile);
@@ -66,16 +66,22 @@ public class ClusterFeature extends Feature
 
 	public void initLexicon(String fileName)
 	{
-		
+
 		if (lexiconMap.containsKey(fileName))
 			word2cluster = lexiconMap.get(fileName);
 		else
 		{
 			if (!initialized)
 			{
-				org.ivdnt.openconvert.log.ConverterLog.defaultLog.println("reading cluster file " + fileName);
-				word2cluster = readClusters(fileName);
-				lexiconMap.put(fileName, word2cluster);
+				try
+				{
+					org.ivdnt.openconvert.log.ConverterLog.defaultLog.println("reading cluster file " + fileName);
+					word2cluster = readClusters(fileName);
+					lexiconMap.put(fileName, word2cluster);
+				} catch (Exception e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 		initialized = true;
@@ -92,7 +98,7 @@ public class ClusterFeature extends Feature
 		}
 		return clusterMap;
 	}
-	
+
 	private void readObject(ObjectInputStream in) throws java.io.IOException, ClassNotFoundException
 	{
 		in.defaultReadObject();

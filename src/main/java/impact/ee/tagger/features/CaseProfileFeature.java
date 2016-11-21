@@ -19,8 +19,8 @@ import java.util.*;
 public class CaseProfileFeature extends impact.ee.classifier.StochasticFeature implements Serializable
 {
 	public Map<String, Distribution> profileMap 
-			= new HashMap<String, Distribution>();
-	
+	= new HashMap<String, Distribution>();
+
 	public static final String profilesFromCorpusSanders = 
 			"resources/exampledata/CaseProfile.out";
 	String fileName=null;
@@ -32,9 +32,9 @@ public class CaseProfileFeature extends impact.ee.classifier.StochasticFeature i
 		this.fileName = fileName;
 		this.name = "caseProfile";
 		init();
-		
+
 	}
-	
+
 	public void init()
 	{
 		if (allLC.size() == 0)
@@ -55,21 +55,26 @@ public class CaseProfileFeature extends impact.ee.classifier.StochasticFeature i
 			//e.printStackTrace();
 		}
 		String[] fields = {"word", "score"};
-		TabSeparatedFile f = new TabSeparatedFile(fileName, fields);
-		String[] x;
-		while ((x = f.getLine()) != null)
+		try
 		{
-			String w = f.getField("word");
-			double p = Double.parseDouble(f.getField("score"));
-			Distribution d = new Distribution();
-			d.addOutcome("lc", 1-p);
-			d.addOutcome("uc", p);
-			profileMap.put(w, d);
+			TabSeparatedFile f = new TabSeparatedFile(fileName, fields);
+			String[] x;
+			while ((x = f.getLine()) != null)
+			{
+				String w = f.getField("word");
+				double p = Double.parseDouble(f.getField("score"));
+				Distribution d = new Distribution();
+				d.addOutcome("lc", 1-p);
+				d.addOutcome("uc", p);
+				profileMap.put(w, d);
+			}
+		} catch (Exception e)
+		{
+			e.printStackTrace();
 		}
-	
 		initialized = true;
 	}
-	
+
 	public Distribution getValue(Object o)
 	{
 		init();
@@ -83,7 +88,7 @@ public class CaseProfileFeature extends impact.ee.classifier.StochasticFeature i
 			{
 				return d;
 			}
-			
+
 			if (w.equals(w0))
 			{
 				return allLC;
@@ -91,14 +96,14 @@ public class CaseProfileFeature extends impact.ee.classifier.StochasticFeature i
 			{
 				return allUC;
 			}
-			
-			
+
+
 			// this is extremely BAD for new (unknown) words!!
 			// should at least add the current value....
 			// best would be to profile with the whole text...
 		} catch (Exception e)
 		{
-			
+
 		}
 		return null;
 	}

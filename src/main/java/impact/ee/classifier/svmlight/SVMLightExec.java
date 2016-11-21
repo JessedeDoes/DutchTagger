@@ -41,7 +41,9 @@ public class SVMLightExec
 			String learnerPath = learner;
 			if (loadFromJar)
 			{
-				learnerPath = NativeUtils.extractFileFromJar("/jni/" + learner).getCanonicalPath();
+				File learnerFile = NativeUtils.extractFileFromJar("/jni/" + learner);
+				learnerFile.setExecutable(true);
+				learnerPath = learnerFile.getCanonicalPath();
 			}
 			ProcessBuilder pb  = new ProcessBuilder(learnerPath, "-z", "m", "-c",  (parameterC + ""),
 					trainingFile.getCanonicalPath(), modelDirectory.getCanonicalPath());
