@@ -28,6 +28,8 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import impact.ee.util.NativeUtils;
+
 /**
  * The main interface class that transfers the training data to the SVM-light
  * library by a native call. Optionally takes as input an individually modified
@@ -48,7 +50,13 @@ public class SVMLightInterface {
 	public static boolean SORT_INPUT_VECTORS = true;
 
 	static {
-		System.loadLibrary("svmlight");
+		//System.loadLibrary("svmlight");
+		try {
+			NativeUtils.loadLibraryFromJar("/jni/libsvmlight.so");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**

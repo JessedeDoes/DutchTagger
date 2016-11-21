@@ -1,6 +1,7 @@
 package impact.ee.classifier.svmlight;
 
 import impact.ee.classifier.svmlight.SVMLightClassifier.Problem;
+import impact.ee.util.NativeUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,11 +32,18 @@ public class SVMLightExec
 	static boolean verbose = true;
 	static double parameterC = 1; // 0.0714;
 	
+	static boolean loadFromJar = true;
+	
 	public static void trainClassifiers(File trainingFile, File modelDirectory)
 	{
 		try 
 		{
-			ProcessBuilder pb  = new ProcessBuilder(learner, "-z", "m", "-c",  (parameterC + ""),
+			String learnerPath = learner;
+			if (loadFromJar)
+			{
+				learnerPath = NativeUtils.extractFileFromJar("/jni/" + learner).getCanonicalPath();
+			}
+			ProcessBuilder pb  = new ProcessBuilder(learnerPath, "-z", "m", "-c",  (parameterC + ""),
 					trainingFile.getCanonicalPath(), modelDirectory.getCanonicalPath());
 
 			Map<String, String> env = pb.environment();
