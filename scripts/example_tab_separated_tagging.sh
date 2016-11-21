@@ -1,0 +1,1 @@
+java -classpath ./target/DutchTagger-0.0.1-SNAPSHOT-jar-with-dependencies.jar 'impact.ee.tagger.BasicTagger$Tester' ./Models/latin.proiel.model ./src/main/resources/resources/exampledata/proiel/proiel.test
