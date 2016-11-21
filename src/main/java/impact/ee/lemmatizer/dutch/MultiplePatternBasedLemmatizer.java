@@ -68,7 +68,7 @@ public class MultiplePatternBasedLemmatizer extends SimplePatternBasedLemmatizer
 		int nWords = 0;
 		this.lexicon = lexicon; 
 		boolean sampling = false;
-		addPresentParticleToLexicon(lexicon); // and other hacks as well....
+		addPresentParticipleToLexicon(lexicon); // and other hacks as well....
 		for (WordForm w: lexicon)
 		{	
 			//org.ivdnt.openconvert.log.ConverterLog.defaultLog.println(w);
@@ -103,7 +103,7 @@ public class MultiplePatternBasedLemmatizer extends SimplePatternBasedLemmatizer
 	 * Also: s-genitives
 	 * @param lexicon
 	 */
-	private void addPresentParticleToLexicon(InMemoryLexicon lexicon)
+	private void addPresentParticipleToLexicon(InMemoryLexicon lexicon)
 	{	
 		Set<WordForm> additions = new HashSet<WordForm>();
 
