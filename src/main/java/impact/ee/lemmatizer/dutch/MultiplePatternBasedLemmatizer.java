@@ -138,7 +138,7 @@ public class MultiplePatternBasedLemmatizer extends SimplePatternBasedLemmatizer
 			}
 
 			
-			// additions
+			// additions: e-vorm bij comparatieven (HOEFT niet meer!)
 			
 			if (w.tag.matches("AA.*comp.*") && !w.wordform.matches(".*e$"))
 			{
@@ -149,7 +149,7 @@ public class MultiplePatternBasedLemmatizer extends SimplePatternBasedLemmatizer
 				w1.tag="AA(degree=comp,formal=infl-e)"; 
 			}
 			
-			if (w.tag.matches("VRB.*inf.*"))
+			if (w.tag.matches("VRB.*inf[^l].*"))
 			{
 				WordForm w1 = new WordForm();
 				w1.wordform = w.wordform + "d";
@@ -219,7 +219,10 @@ public class MultiplePatternBasedLemmatizer extends SimplePatternBasedLemmatizer
 		}
 
 		for (WordForm w:additions)
+		{
+			System.err.println("Adding: " + w);
 			lexicon.addWordform(w);
+		}
 	}
 
 	public void train(InMemoryLexicon lexicon)
