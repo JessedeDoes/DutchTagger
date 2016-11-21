@@ -446,6 +446,9 @@ public class MultiplePatternBasedLemmatizer extends SimplePatternBasedLemmatizer
 	public static Tagger getTaggerLemmatizer(String taggingModel, String lexiconPath, String className, Properties p)
 	{
 		boolean reuseTagLexicon = true;
+		if (p.getProperty("useExternalLexicon") != null)
+			reuseTagLexicon = false;
+		
 		BasicTagger tagger = new BasicTagger(p, false);
 
 		tagger.loadModel(taggingModel);

@@ -101,6 +101,7 @@ public class ImpactTaggerLemmatizerClient extends ImpactTaggingClient
 	
 	public static void main(String[] args)
 	{
+		org.ivdnt.openconvert.log.ConverterLog.setDefaultVerbosity(true);
 		nl.namescape.util.Options options = new nl.namescape.util.Options(args)
 		{
 			@Override
@@ -108,6 +109,7 @@ public class ImpactTaggerLemmatizerClient extends ImpactTaggingClient
 			{
 				super.defineOptions();
 				options.addOption("n",  "nThreads", true, "Number of threads");
+				options.addOption("L" , "useExternalLexicon", true, "Override internal lexicon");
 			}
 		};
 		
