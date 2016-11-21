@@ -1,8 +1,10 @@
 package impact.ee.lexicon;
 import impact.ee.trie.Trie;
+import impact.ee.util.Resource;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Serializable;
@@ -30,7 +32,7 @@ public class InMemoryLexicon implements Iterable<WordForm>, ILexicon, Serializab
 	public Set<WordForm> wordforms = new HashSet<WordForm>();
 
 
-	public void readFromFile(String fileName)
+	public void readFromFile(String fileName, boolean tryJar)
 	{
 		org.ivdnt.openconvert.log.ConverterLog.defaultLog.println("reading lexicon from: " + fileName);
 		if (fileName.startsWith("database:"))
@@ -46,7 +48,12 @@ public class InMemoryLexicon implements Iterable<WordForm>, ILexicon, Serializab
 		String s="";
 		try
 		{
-			Reader reader = new InputStreamReader(new FileInputStream(fileName), "UTF-8");
+			InputStream i;
+			if (tryJar)
+				i = Resource.openResourceStream(fileName);
+			else
+				i = new FileInputStream(fileName);
+			Reader reader = new InputStreamReader(i, "UTF-8");
 			BufferedReader b = new BufferedReader(reader) ; // UTF?
 			
 			while ( (s = b.readLine()) != null) // volgorde: type lemma pos lemma_pos /// why no ID's? it is better to keep them
@@ -62,6 +69,10 @@ public class InMemoryLexicon implements Iterable<WordForm>, ILexicon, Serializab
 			org.ivdnt.openconvert.log.ConverterLog.defaultLog.println("s = " + s);
 			e.printStackTrace();
 		}
+	}
+	public void readFromFile(String fileName)
+	{
+		readFromFile(fileName, false);
 	}
 
 	public void addWordform(WordForm w)

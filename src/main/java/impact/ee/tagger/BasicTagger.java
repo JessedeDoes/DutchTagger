@@ -324,6 +324,7 @@ public class BasicTagger implements Serializable, Tagger
 	{
 		public static void main(String[] args) 
 		{
+			org.ivdnt.openconvert.log.ConverterLog.setDefaultVerbosity(true);
 			Options o = new Options(args) 
 			{
 				public void defineOptions()

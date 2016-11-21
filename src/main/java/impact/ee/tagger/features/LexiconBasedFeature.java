@@ -40,9 +40,9 @@ public class LexiconBasedFeature extends StochasticFeature
 			lexicon = lexiconMap.get(fileName);
 		else
 		{
-			org.ivdnt.openconvert.log.ConverterLog.defaultLog.println("Reading lexicon...");
+			org.ivdnt.openconvert.log.ConverterLog.defaultLog.println("Reading lexicon... " + fileName);
 			InMemoryLexicon iml = new InMemoryLexicon();
-			iml.readFromFile(fileName);
+			iml.readFromFile(fileName, true);
 			lexiconMap.put(fileName, iml);
 			TaggerFeatures.putNamedObject("tagLexicon", iml); // not really needed....
 			lexicon = iml;

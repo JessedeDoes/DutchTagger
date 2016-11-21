@@ -57,7 +57,7 @@ public class CaseProfileFeature extends impact.ee.classifier.StochasticFeature i
 		String[] fields = {"word", "score"};
 		try
 		{
-			TabSeparatedFile f = new TabSeparatedFile(fileName, fields);
+			TabSeparatedFile f = new TabSeparatedFile(fileName, fields, true);
 			String[] x;
 			while ((x = f.getLine()) != null)
 			{

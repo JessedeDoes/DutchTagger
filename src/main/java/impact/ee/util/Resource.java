@@ -74,6 +74,11 @@ public class Resource
 		return new  Resource().openFile(s);
 	}
 	
+	public  static InputStream openResourceStream(String s)
+	{
+		return new Resource().openStream(s);
+	}
+	
 	public static String getStringFromFile(String fileName)
 	{
 		String r="";

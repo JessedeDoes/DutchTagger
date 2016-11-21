@@ -91,7 +91,7 @@ public class ClusterFeature extends Feature
 	{
 		String[] fields = {"cluster", "word"};
 		Map<String,String> clusterMap = new HashMap<String,String>();
-		TabSeparatedFile f = new TabSeparatedFile(fileName,fields);
+		TabSeparatedFile f = new TabSeparatedFile(fileName,fields, true);
 		while (f.getLine() != null)
 		{
 			clusterMap.put(f.getField("word"), f.getField("cluster"));
