@@ -1,16 +1,16 @@
 package nl.namescape.stats;
 
-import com.radialpoint.word2vec.ConvertVectors;
-import com.radialpoint.word2vec.Distance;
-import com.radialpoint.word2vec.Distance.ScoredTerm;
-import com.radialpoint.word2vec.Vectors;
-
 import ml.options.Options;
 import ml.regression.LASSO;
 import ml.regression.Regression;
 import la.matrix.*;
 import la.vector.DenseVector;
 import ml.utils.Printer;
+import word2vec.ConvertVectors;
+import word2vec.Distance;
+import word2vec.Vectors;
+import word2vec.Util;
+import word2vec.Distance.ScoredTerm;
 
 import java.util.*;
 /**
@@ -129,7 +129,7 @@ public class testLAML
 					DenseVector img = (DenseVector) Wt.operate(v);
 					
 					float[] y1 = doubleToFloat(img.getPr());
-					Distance.normalize(y1);
+					Util.normalize(y1);
 					
 					// now measure distance between y1 and vec2. waarom zit dat verdarrie niet in de interface??
 					
@@ -235,8 +235,8 @@ public class testLAML
 	{
 		//test();
 		testLAML l = new testLAML();
-		Vectors v1 = ConvertVectors.readVectors(args[0]);
-		Vectors v2 = ConvertVectors.readVectors(args[1]);
+		Vectors v1 = Vectors.readFromFile(args[0]);
+		Vectors v2 = Vectors.readFromFile(args[1]);
 		l.testMapping(v1, v2);               
 	}
 }

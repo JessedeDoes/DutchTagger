@@ -4,8 +4,9 @@ import java.io.Serializable;
 
 import impact.ee.classifier.Distribution;
 import impact.ee.tagger.Context;
+import word2vec.*;
+
 import java.util.*;
-import com.radialpoint.word2vec.*;
 
 /**
  * Try to use word2vec word representations as features
@@ -38,7 +39,7 @@ public class WordVectorFeature extends impact.ee.classifier.StochasticFeature im
 		if (WordVectorFeature.vectors == null)
 		{
 			org.ivdnt.openconvert.log.ConverterLog.defaultLog.println("reading vectors from " + vectorFileName);
-			vectors = ConvertVectors.readVectors(vectorFileName);
+			vectors = Vectors.readFromFile(vectorFileName);
 		}
 	}
 	
