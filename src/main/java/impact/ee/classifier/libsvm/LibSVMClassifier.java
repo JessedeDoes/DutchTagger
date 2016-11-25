@@ -4,14 +4,11 @@ import libsvm.*;
 import impact.ee.classifier.Classifier;
 import impact.ee.classifier.Dataset;
 import impact.ee.classifier.Distribution;
-import impact.ee.classifier.FeatureSet;
 import impact.ee.classifier.Instance;
 import impact.ee.classifier.Distribution.Outcome;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -73,6 +70,7 @@ public class LibSVMClassifier implements Classifier, Serializable
 		// org.ivdnt.openconvert.log.ConverterLog.defaultLog.println(m + " in " + i);
 		// svm_node[] x = new svm_node[m];
 		List<svm_node> xList = new ArrayList<svm_node>();
+		@SuppressWarnings("unused")
 		Double L = handleItem(i, xList, false);
 		svm_node[] x = new svm_node[xList.size()];
 		x = xList.toArray(x);
@@ -86,13 +84,16 @@ public class LibSVMClassifier implements Classifier, Serializable
 	{
 		//int m = getNumberOfKnownFeatures(i);
 		List<svm_node> xList = new ArrayList<svm_node>();
+		@SuppressWarnings("unused")
 		Double L = handleItem(i, xList, false);
 		svm_node[] x = new svm_node[xList.size()];
 		x = xList.toArray(x);
 
+		@SuppressWarnings("unused")
 		int svm_type=svm.svm_get_svm_type(model);
 		int nr_class=svm.svm_get_nr_class(model);
 		double[] prob_estimates= new double[nr_class];
+		@SuppressWarnings("unused")
 		double v = svm.svm_predict_probability(model,x,prob_estimates); // !! apparently not always possible
 
 		Distribution d = new Distribution();
@@ -250,7 +251,7 @@ public class LibSVMClassifier implements Classifier, Serializable
 			labelN = N;
 		}
 
-		int k=0;
+		//int k=0;
 
 		for (int j=0; j < m; j++) 
 		{
@@ -270,7 +271,7 @@ public class LibSVMClassifier implements Classifier, Serializable
 
 				n.index = index+1;
 				n.value = 1; // TODO do something about real-valued features
-				k++;
+				//k++;
 			}
 		}
 
@@ -300,7 +301,7 @@ public class LibSVMClassifier implements Classifier, Serializable
 						x.add(n);
 						n.index = index+1;
 						n.value = o.p; // TODO werkt o.p nou helemaal niet? (pfft dit klopte dus niet!)
-						k++;
+						//k++;
 					}
 				}
 			}

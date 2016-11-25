@@ -8,9 +8,7 @@ import impact.ee.classifier.Distribution;
 import impact.ee.classifier.Instance;
 import impact.ee.classifier.Distribution.Outcome;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
@@ -65,6 +63,7 @@ public class LibLinearClassifier implements Classifier
 		// org.ivdnt.openconvert.log.ConverterLog.defaultLog.println(m + " in " + i);
 		//FeatureNode[] x = new FeatureNode[m];
 		List<FeatureNode> xList = new ArrayList<FeatureNode>();
+		@SuppressWarnings("unused")
 		Double L = handleItem(i, xList, false);
 		FeatureNode[] x = new FeatureNode[xList.size()];
 		x = xList.toArray(x);
@@ -78,6 +77,7 @@ public class LibLinearClassifier implements Classifier
 	{
 		//int m = getNumberOfKnownFeatures(i);
 		List<FeatureNode> xList = new ArrayList<FeatureNode>();
+		@SuppressWarnings("unused")
 		Double L = handleItem(i, xList, false);
 		FeatureNode[] x = new FeatureNode[xList.size()];
 		x = xList.toArray(x);
@@ -85,6 +85,7 @@ public class LibLinearClassifier implements Classifier
 		//int svm_type=Linear.(model);
 		int nr_class = model.getNrClass() ; // svm.svm_get_nr_class(model);
 		double[] prob_estimates= new double[nr_class];
+		@SuppressWarnings("unused")
 		double v = Linear.predictProbability(model,x,prob_estimates); // !! apparently not always possible
 
 		Distribution d = new Distribution();
@@ -238,7 +239,7 @@ public class LibLinearClassifier implements Classifier
 			labelN = N;
 		}
 
-		int k=0;
+		//int k=0;
 
 		for (int j=0; j < m; j++) 
 		{
@@ -255,7 +256,7 @@ public class LibLinearClassifier implements Classifier
 			{
 				FeatureNode n = new FeatureNode(index+1,1);
 				x.add(n);
-				k++;
+				//k++;
 			}
 		}
 
@@ -280,7 +281,7 @@ public class LibLinearClassifier implements Classifier
 					{
 						FeatureNode n = new FeatureNode(index+1, o.p); // he dit klopt niet
 						x.add(n);
-						k++;
+						//k++;
 					}
 				}
 			}
