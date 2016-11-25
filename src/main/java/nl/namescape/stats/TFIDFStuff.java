@@ -8,7 +8,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import nl.namescape.stats.WordList.TypeFrequency;
 import org.ivdnt.openconvert.filehandling.DirectoryHandling;
 import org.ivdnt.openconvert.filehandling.MultiThreadedFileHandler;
-import org.ivdnt.openconvert.util.*;
+import org.ivdnt.util.*;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 

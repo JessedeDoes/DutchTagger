@@ -10,8 +10,8 @@ import javax.xml.parsers.SAXParserFactory;
 import org.ivdnt.openconvert.filehandling.DirectoryHandling;
 import org.ivdnt.openconvert.filehandling.DoSomethingWithFile;
 import org.ivdnt.openconvert.filehandling.MultiThreadedFileHandler;
-import org.ivdnt.openconvert.tei.TEITagClasses;
-import org.ivdnt.openconvert.util.XML;
+import nl.namescape.tei.TEITagClasses;
+import org.ivdnt.util.XML;
 
 import org.w3c.dom.*;
 import org.xml.sax.Attributes;
