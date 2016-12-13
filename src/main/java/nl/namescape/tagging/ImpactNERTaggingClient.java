@@ -48,8 +48,9 @@ public class ImpactNERTaggingClient extends ImpactTaggingClient
 	public void setProperties(Properties p)
 	{
 		this.properties = p;
+		// 2016: pass properties here!
 		Tagger namePartTagger = 
-				NamePartTagger.getNamePartTagger(p.getProperty("nerModel"), p.getProperty("partModel"));
+				NamePartTagger.getNamePartTagger(p.getProperty("nerModel"), p.getProperty("partModel"), p);
 		this.tagger = namePartTagger;
 	}
 	
@@ -60,7 +61,7 @@ public class ImpactNERTaggingClient extends ImpactTaggingClient
 		args = options.commandLine.getArgs();
 		 int nThreads = Runtime.getRuntime().availableProcessors()-1;
 		Tagger namePartTagger = 
-				NamePartTagger.getNamePartTagger(args[0], args[1]);
+				NamePartTagger.getNamePartTagger(args[0], args[1], options.properties);
 		ImpactNERTaggingClient x = new ImpactNERTaggingClient(namePartTagger);
 		x.tokenize = options.getOptionBoolean("tokenize", true);
 		MultiThreadedFileHandler m = new MultiThreadedFileHandler(x,nThreads);

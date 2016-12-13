@@ -89,8 +89,19 @@ public class BasicNERTagger implements Serializable, Tagger
 		}
 	}
 	
+	// to do 2016: handle properties like in BasicTagger
 	public BasicNERTagger(Properties p)
 	{
+		if (p.getProperty("tagLexicon") != null)
+		{
+			TaggerFeatures.setLexiconFileName(p.getProperty("tagLexicon"));
+		}
+		
+		if (p.getProperty("word2vecFile") != null)
+		{
+			WordVectorFeature.SonarVectors =  p.getProperty("word2vecFile");
+			org.ivdnt.openconvert.log.ConverterLog.defaultLog.println("vector file name set to " +WordVectorFeature.SonarVectors );
+		}
 		String fileName = p.getProperty("modelFileName");
 		this.loadModel(fileName);
 	}

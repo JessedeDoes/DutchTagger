@@ -34,11 +34,17 @@ public class NamePartTagger extends BasicNERTagger
 	}
 	
 	
-	public static Tagger getNamePartTagger(String nerModel, String partModel)
+	public static Tagger getNamePartTagger(String nerModel, String partModel, Properties props)
 	{
 		Properties p = new Properties();
+		if (props != null)
+			  for (Object o: p.keySet())
+				  p.put(o, props.get(o));
+			
 		p.put("namePartModelFileName", partModel);
 		p.put("modelFileName", nerModel);
+	
+		// 2016: pass more properties here!
 		BasicNERTagger t0 = new BasicNERTagger(p);
 		NamePartTagger t1 = new NamePartTagger(p);
 		//t0.loadModel(nerModel);
