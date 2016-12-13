@@ -176,7 +176,7 @@ public class TEITokenizer extends DefaultHandler
 	{
 		Element e = currentDocument.createElement(qName);
 		//org.ivdnt.openconvert.log.ConverterLog.defaultLog.println(localName);
-		if (qName.equals("text") || qName.equals("osisText") || qName.equals("entry") || qName.equals("proceedings"))
+		if (qName.equals("text") || qName.equals("osisText") || qName.equals("entry") || qName.equals("proceedings") || qName.equals("book"))
 		{
 			//org.ivdnt.openconvert.log.ConverterLog.defaultLog.println("OK....");
 			insideTokenizedElement=true;

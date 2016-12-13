@@ -97,13 +97,13 @@
     <artifactId>mapdb</artifactId>
     <version>1.0.7</version>
 </dependency>
-  
+ 
 <dependency>
     <groupId>laml</groupId>
     <artifactId>laml</artifactId>
     <version>1.5</version>
     <scope>system</scope>
-    <systemPath>${project.basedir}/lib/LAML-1.5.jar</systemPath>
+    <systemPath>/home/does/workspace/DutchTagger/lib/LAML-1.5.jar</systemPath>
 </dependency>
  <dependency>
     <groupId>junit</groupId>
