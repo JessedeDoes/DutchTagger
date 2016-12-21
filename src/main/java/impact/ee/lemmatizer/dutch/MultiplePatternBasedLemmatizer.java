@@ -220,7 +220,7 @@ public class MultiplePatternBasedLemmatizer extends SimplePatternBasedLemmatizer
 
 		for (WordForm w:additions)
 		{
-			System.err.println("Adding: " + w);
+			// System.err.println("Adding: " + w);
 			lexicon.addWordform(w);
 		}
 	}

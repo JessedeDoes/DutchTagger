@@ -105,7 +105,14 @@ public class GiGaNTCorpusLexiconRelation implements TagRelation
 		{
 			if (allowConversion) return possibleConversion(tag1,tag2); else return false;
 		}
-		
+	
+                // To Do: pronouns..
+                //  
+                if (corpusPoS.equals("PD"))
+                {
+                   return intersects(tag1.get("type"), tag2.get("type"));
+                }	
+
 		if (corpusPoS.equals("NOU-C") || corpusPoS.equals("NOU-P"))
 		{
 			return intersects(tag1.get("number"), tag2.get("number"));
