@@ -65,7 +65,8 @@ public class ImpactNERTaggingClient extends ImpactTaggingClient
 		ImpactNERTaggingClient x = new ImpactNERTaggingClient(namePartTagger);
 		x.tokenize = options.getOptionBoolean("tokenize", true);
 		MultiThreadedFileHandler m = new MultiThreadedFileHandler(x,nThreads);
-		DirectoryHandling.tagAllFilesInDirectory(m, args[2], args[3]);
+		DirectoryHandling.usePathHandler = false;
+		DirectoryHandling.traverseDirectory(m, args[2], args[3],null);
 		m.shutdown();
 	}
 }
