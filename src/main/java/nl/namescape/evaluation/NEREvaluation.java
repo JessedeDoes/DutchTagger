@@ -108,10 +108,10 @@ public class NEREvaluation
 			double recall = truePositiveCounter.get(t) == 0 ? 0 : truePositiveCounter.get(t) 
 					/ (double) (truePositiveCounter.get(t) + falseNegativeCounter.get(t));
 			double f1 = 2 * (precision * recall) / (precision + recall);
-			org.ivdnt.openconvert.log.ConverterLog.defaultLog.println(t + ": precision "  + precision + ", recall " + recall + " f1: " + f1);
+			System.out.println(t + ": precision "  + precision + ", recall " + recall + " f1: " + f1);
 		}
 		double classificationAccuracy = truePositiveCounter.get(ALL) / (double) truePositiveCounter.get(ANY);
-		org.ivdnt.openconvert.log.ConverterLog.defaultLog.println("Classification accuracy:" + classificationAccuracy);
+		System.out.println("Classification accuracy:" + classificationAccuracy);
 	}
 	
 	public static void main(String[] args)
