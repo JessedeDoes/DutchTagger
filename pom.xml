@@ -24,6 +24,12 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
   </properties>
+ <repositories>
+    <repository>
+      <id>my-private-repo</id>
+      <url>http://dedoes.home.xs4all.nl/maven</url>
+    </repository>
+  </repositories>
 
   <dependencies>
   <!--
@@ -97,13 +103,11 @@
     <artifactId>mapdb</artifactId>
     <version>1.0.7</version>
 </dependency>
- 
 <dependency>
     <groupId>laml</groupId>
-    <artifactId>laml</artifactId>
+    <artifactId>LAML</artifactId>
     <version>1.5</version>
-    <scope>system</scope>
-    <systemPath>/home/does/workspace/DutchTagger/lib/LAML-1.5.jar</systemPath>
+    <type>jar</type>
 </dependency>
  <dependency>
     <groupId>junit</groupId>
