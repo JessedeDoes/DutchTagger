@@ -36,10 +36,10 @@ import java.util.*;
 
 public class LanguageTagger implements SimpleInputOutputProcess
 {
-	static String[] priorLanguages = {"nl", "en", "de", "fr", "it", "es"};
-	static double[] priorProbabilities = {0.98, 0.02, 0.02, 0.02, 0.01, 0.01};
+	static String[] priorLanguages = {"nl", "en", "de", "fr", "it", "es", "la"};
+	static double[] priorProbabilities = {0.98, 0.02, 0.02, 0.02, 0.01, 0.01, 0.01};
 	static HashMap<String,Double> priorMap  = new HashMap<String,Double>();
-	String MainLanguage = "en"; // nl
+	String MainLanguage = "nl"; // nl
 	boolean usePriors = false;
 	boolean tagNTokens = true;
 
