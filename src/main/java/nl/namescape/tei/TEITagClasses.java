@@ -2,7 +2,7 @@ package nl.namescape.tei;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.namescape.util.XML;
+import org.ivdnt.util.XML;
 
 import org.w3c.dom.*;
 
@@ -206,9 +206,38 @@ public class TEITagClasses
 		List<Element> tokens = XML.getElementsByTagname(root, tokenTagNames, false);
 		Element previousParent = null;
 		
+		List<Element> tokenParents = new ArrayList<Element>();
+		Set<Element> seen = new HashSet<Element>();
 		for (Element t: tokens)
 		{
 			Element parent = (Element) t.getParentNode();
+			if (!seen.contains(parent))
+			{
+				tokenParents.add(parent);
+				seen.add(parent);
+			}
+		};
+		Element text = XML.getElementByTagname(root, "text");
+		//
+		List<Node> textNodes = new ArrayList<Node>();
+		
+		XML.findTextNodesBelow(textNodes, text);
+		
+		for (Node t: textNodes)
+		{
+			if (t.getTextContent() != null && t.getTextContent().length() > 0)
+			{
+				Element parent = (Element) t.getParentNode();
+				if (!seen.contains(parent))
+				{
+					tokenParents.add(parent);
+					seen.add(parent);
+				}
+			}
+		}
+		
+		for (Element parent: tokenParents)
+		{
 			if (previousParent == parent)
 				continue;
 			boolean foundGoodAncestor = false;
@@ -255,7 +284,7 @@ public class TEITagClasses
 			
 			if (!foundGoodAncestor)
 			{
-				org.ivdnt.openconvert.log.ConverterLog.defaultLog.println("No good ancestor found for token: "  + XML.NodeToString(t));
+				//org.ivdnt.openconvert.log.ConverterLog.defaultLog.println("No good ancestor found for token: "  + XML.NodeToString(t));
 			}
 			previousParent = parent;
 		}

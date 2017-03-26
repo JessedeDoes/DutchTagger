@@ -112,7 +112,7 @@ public class DetectorFactory {
     {
     	
     	 Pattern pattern;
-
+    	 System.err.println("loading from " + profileDirectory);
     	 pattern = Pattern.compile(profileDirectory + ".*[a-z].*");
 
     	 final Collection<String> listOfProfiles = ResourceList.getResources(pattern);
@@ -151,7 +151,9 @@ public class DetectorFactory {
     static /* package scope */ void addProfile(LangProfile profile, int index, int langsize) throws LangDetectException {
         String lang = profile.name;
         if (instance_.langlist.contains(lang)) {
-            throw new LangDetectException(ErrorCode.DuplicateLangError, "duplicate the same language profile");
+             // throw new LangDetectException(ErrorCode.DuplicateLangError, 
+             //		"duplicate the same language profile for " + lang);
+        	return;
         }
         instance_.langlist.add(lang);
         for (String word: profile.freq.keySet()) {

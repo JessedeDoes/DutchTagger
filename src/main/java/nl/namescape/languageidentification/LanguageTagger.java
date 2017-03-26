@@ -36,11 +36,15 @@ import java.util.*;
 
 public class LanguageTagger implements SimpleInputOutputProcess
 {
-	static String[] priorLanguages = {"nl", "en", "de", "fr", "it", "es", "la"};
-	static double[] priorProbabilities = {0.98, 0.02, 0.02, 0.02, 0.01, 0.01, 0.01};
+	//static String[] priorLanguages = {"nl", "en", "de", "fr", "it", "es", "la"};
+	// static double[] priorProbabilities = {0.98, 0.02, 0.02, 0.02, 0.01, 0.01, 0.01};
+	static String[] priorLanguages = {"nl", "fr"};
+	static double[] priorProbabilities = {0.6, 0.4};
+	String defaultLanguage = "nl";
+	
 	static HashMap<String,Double> priorMap  = new HashMap<String,Double>();
 	String MainLanguage = "nl"; // nl
-	boolean usePriors = false;
+	boolean usePriors = true;
 	boolean tagNTokens = true;
 
 	private Properties properties;
@@ -113,6 +117,7 @@ public class LanguageTagger implements SimpleInputOutputProcess
 			// org.ivdnt.openconvert.log.ConverterLog.defaultLog.println("Paragraph content: " + s);
 			
 			String lang = detectLanguage(s);
+			//System.err.println("detected " + lang + "  for " + s);
 			int nTokens = TEITagClasses.getWordElements(z).size();
 			totalTokens += nTokens;
 			if (this.tagNTokens)
@@ -130,6 +135,7 @@ public class LanguageTagger implements SimpleInputOutputProcess
 				}
 			} else
 			{	
+				z.setAttribute("xml:lang", this.defaultLanguage);
 				// org.ivdnt.openconvert.log.ConverterLog.defaultLog.println("No language found for " + s);
 			}
 		}
