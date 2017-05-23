@@ -12,6 +12,7 @@ import org.ivdnt.openconvert.filehandling.SimpleInputOutputProcess;
 
 import org.w3c.dom.*;
 
+import edu.stanford.nlp.util.StringUtils;
 import nl.namescape.languageidentification.cybozu.*;
 
 
@@ -36,10 +37,10 @@ import java.util.*;
 
 public class LanguageTagger implements SimpleInputOutputProcess
 {
-	//static String[] priorLanguages = {"nl", "en", "de", "fr", "it", "es", "la"};
-	// static double[] priorProbabilities = {0.98, 0.02, 0.02, 0.02, 0.01, 0.01, 0.01};
-	static String[] priorLanguages = {"nl", "fr"};
-	static double[] priorProbabilities = {0.6, 0.4};
+	static String[] priorLanguages = {"nl", "en", "de", "fr", "it", "es", "la"};
+        static double[] priorProbabilities = {0.3, 0.3, 0.025, 0.3, 0.025, 0.025, 0.025};
+	//static String[] priorLanguages = {"nl", "fr"};
+	//static double[] priorProbabilities = {0.6, 0.4};
 	String defaultLanguage = "nl";
 	
 	static HashMap<String,Double> priorMap  = new HashMap<String,Double>();
@@ -101,27 +102,163 @@ public class LanguageTagger implements SimpleInputOutputProcess
 		}
 	}
 
+	public void deleteXmlLang(Element e)
+	{
+		e.removeAttribute("xml:lang");
+		for (Element x: XML.getAllSubelements(e, false))
+			deleteXmlLang(x);
+	}
+	
+	static class LanguageInformation
+	{
+		Counter<String> counts = new Counter<String>();
+		int textLength = 0;
+		
+		public void aggregate(LanguageInformation other)
+		{
+			for (String s: other.counts.keyList())
+			{
+				this.counts.increment(s, other.counts.get(s));
+				this.textLength += other.counts.get(s);
+			}
+		}
+		
+		public String getMajorityLanguage()
+		{
+			List<String> keys = counts.keyList();
+			if (keys.size() > 0)
+			{
+				Collections.sort(keys, (l1,l2) -> counts.get(l2).compareTo(counts.get(l1)));
+				return keys.get(0);
+			} else
+			{
+				return null;
+			}
+		}
+		
+		public String toString()
+		{
+			return this.getMajorityLanguage() + "/" + this.textLength +  "/" +
+		      StringUtils.join(this.counts.keyList().stream().map( (l) -> l + ":"  + counts.get(l)),";");
+		}
+		
+		public Element langInfoElement(Element context)
+		{
+			Element x = context.getOwnerDocument().createElement("langInfo");
+			x.setAttribute("textLength", textLength + "");
+			for (String l: this.counts.keyList())
+			{
+				int c = counts.get(l);
+				Element ce = context.getOwnerDocument().createElement("langCharLength");
+				ce.setAttribute("language", l);
+				ce.setAttribute("count", c + "");
+				x.appendChild(ce);
+			}
+			return x;
+		}
+	}
+	
+	public LanguageInformation langStats(Element e)
+	{
+		// System.err.println("lang info for "  + e);
+		LanguageInformation l = new LanguageInformation();
+		String lang = e.getAttribute("xml:lang");
+		
+		if (lang != null && lang.length() > 0)
+		{
+			l.textLength = getTextContentExcludingNotesAndHeads(e).length(); // NEE: excluding notes ...
+			l.counts.increment(lang,l.textLength);
+			// System.err.println("Found at base level for " + e.getTagName() + " " + l.toString());
+		} else
+		{
+			for (Element x: XML.getAllSubelements(e, false))
+			{
+				if (!(x.getTagName().equals("note") || x.getTagName().equals("head")))
+				{
+					LanguageInformation other = langStats(x);
+					l.aggregate(other);
+					// System.err.println("Aggregate: " + x.getTagName()  + " into " + e.getTagName());
+				}
+			}
+
+		}
+		String mainLang = l.getMajorityLanguage();
+		if (mainLang != null)
+		{
+			e.setAttribute("xml:lang", mainLang);
+			if (e.getTagName().startsWith("div") )
+			{
+				// tag language info in some way
+
+				Element egXML = XML.getElementByTagname(e, "egXML:egXML");
+				if (egXML != null && egXML.getParentNode() == e) // ugly
+				{
+					egXML.appendChild(l.langInfoElement(e));
+				}
+			}
+			if (e.getTagName().equals("div2"))
+			{
+				System.err.println("##### " + l + "\n" + this.getTextContentExcludingNotesAndHeads(e));
+			}
+		}
+		// if (mainLang != null) System.err.println("LangInfo=" + l.toString() + " for " + e.getTagName());
+		return l;
+	}
+	public String getTextContentExcludingNotesAndHeads(Element e)
+	{
+		if (e.getTagName().equals("note") || e.getTagName().equals("head"))
+		{
+			return e.getTextContent();
+		} else
+		{
+			NodeList nl = e.getChildNodes();
+			String txt="";
+			for (int i=0; i < nl.getLength(); i++)
+			{
+				Node n = nl.item(i);
+				if (n.getNodeType() == Node.ELEMENT_NODE)
+				{
+					Element ne = (Element) n;
+					if (ne.getTagName().equals("note") || e.getTagName().equals("head"))
+					{
+						
+					} else
+					{
+						txt += getTextContentExcludingNotesAndHeads(ne);
+					}
+				} else if (n.getNodeType() == Node.TEXT_NODE)
+				{
+					txt += n.getTextContent();
+				}
+			}
+			return txt;
+		}
+	}
+	
 	public String tagLanguages(Document d)
 	{
 		Counter<String> c = new Counter<String>();
 		Set<Element> paragraphLike = TEITagClasses.getSentenceSplittingElements(d);
 		int L = 0;
 		int totalTokens = 0;
+		deleteXmlLang(d.getDocumentElement());
 		for (Element  z: paragraphLike)
 		{
 			// org.ivdnt.openconvert.log.ConverterLog.defaultLog.println(z);
-			
-			String s = z.getTextContent();
+			if (z.getTagName().contains("div")) // ugly hack...
+				continue;
+			String s = getTextContentExcludingNotesAndHeads(z); // should exclude notes ....
 			L += s.length();
 			
 			// org.ivdnt.openconvert.log.ConverterLog.defaultLog.println("Paragraph content: " + s);
 			
 			String lang = detectLanguage(s);
-			//System.err.println("detected " + lang + "  for " + s);
+			// System.err.println("detected " + lang + "  for " + z.getTagName() +  ":  " + s);
 			int nTokens = TEITagClasses.getWordElements(z).size();
 			totalTokens += nTokens;
 			if (this.tagNTokens)
 				z.setAttribute("n", new Integer(nTokens).toString());
+			
 			if (lang != null)
 			{
 				if (lang.equals("af"))
@@ -140,6 +277,9 @@ public class LanguageTagger implements SimpleInputOutputProcess
 			}
 		}
 		
+		LanguageInformation li = this.langStats(d.getDocumentElement());
+		return li.toString();
+/*		
 		String mainLanguage = "unknown";
 		
 		for (String lang: c.keyList())
@@ -161,6 +301,7 @@ public class LanguageTagger implements SimpleInputOutputProcess
 			org.ivdnt.openconvert.log.ConverterLog.defaultLog.println("No main language found! Text length in chars: " + L);
 		}
 		return mainLanguage;
+*/
 	}
 	
 	@Override
@@ -171,11 +312,9 @@ public class LanguageTagger implements SimpleInputOutputProcess
 		try 
 		{
 			d = XML.parse(in);
-			String main = tagLanguages(d);
-			if (!main.equals(MainLanguage))
-			{
-				org.ivdnt.openconvert.log.ConverterLog.defaultLog.println("Nondutch doc: " + main + " : "  + in);
-			}
+			String li = tagLanguages(d);
+			System.out.println(in + "\t" + li);
+			
 		} catch (Exception e) 
 		{
 			e.printStackTrace();
@@ -197,6 +336,7 @@ public class LanguageTagger implements SimpleInputOutputProcess
 	{
 		
 		LanguageTagger xmlTagger = new LanguageTagger();
+		DirectoryHandling.usePathHandler = false;
 		DirectoryHandling.tagAllFilesInDirectory(xmlTagger, args[0], args[1]);
 	}
 
