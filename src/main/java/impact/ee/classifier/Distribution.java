@@ -108,6 +108,7 @@ public class Distribution implements java.io.Serializable
 
 	public void computeProbabilities()
 	{
+                N = outcomes.size();
 		for (Outcome i: outcomes)
 		{
 			i.p = this.existential?(i.count>0?1:0):i.count / N;
