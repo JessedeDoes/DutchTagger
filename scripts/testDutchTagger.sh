@@ -1,7 +1,7 @@
 JAR=./target/DutchTagger-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 
-CORPUSDIR=/vol1/Corpus
-LEXICON=/vol1/Corpus/DutchTagger/Data/spelling.tab
+CORPUSDIR=/datalokaal/Corpus
+LEXICON=/datalokaal/Corpus/DutchTagger/Data/spelling.tab
 VECTORS=$CORPUSDIR/DutchTagger/Data/sonar.vectors.bin
 MODEL=$CORPUSDIR/DutchTagger/Data/withMoreVectorrs
 
