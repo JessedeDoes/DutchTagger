@@ -160,7 +160,7 @@ public class LanguageTagger implements SimpleInputOutputProcess
 	
 	public LanguageInformation langStats(Element e)
 	{
-		// System.err.println("lang info for "  + e);
+		System.err.println("find aggregate lang info for "  + e);
 		LanguageInformation l = new LanguageInformation();
 		String lang = e.getAttribute("xml:lang");
 		
@@ -168,7 +168,7 @@ public class LanguageTagger implements SimpleInputOutputProcess
 		{
 			l.textLength = getTextContentExcludingNotesAndHeads(e).length(); // NEE: excluding notes ...
 			l.counts.increment(lang,l.textLength);
-			// System.err.println("Found at base level for " + e.getTagName() + " " + l.toString());
+			System.err.println("Found at base level for " + e.getTagName() + " " + l.toString());
 		} else
 		{
 			for (Element x: XML.getAllSubelements(e, false))
@@ -177,7 +177,7 @@ public class LanguageTagger implements SimpleInputOutputProcess
 				{
 					LanguageInformation other = langStats(x);
 					l.aggregate(other);
-					// System.err.println("Aggregate: " + x.getTagName()  + " into " + e.getTagName());
+					System.err.println("Aggregate: " + x.getTagName()  + " into " + e.getTagName());
 				}
 			}
 
@@ -194,6 +194,9 @@ public class LanguageTagger implements SimpleInputOutputProcess
 				if (egXML != null && egXML.getParentNode() == e) // ugly
 				{
 					egXML.appendChild(l.langInfoElement(e));
+				} else
+				{
+					System.err.println("egXML niet gevonden in divje "  + e.getTextContent());
 				}
 			}
 			if (e.getTagName().equals("div2"))
@@ -244,8 +247,9 @@ public class LanguageTagger implements SimpleInputOutputProcess
 		deleteXmlLang(d.getDocumentElement());
 		for (Element  z: paragraphLike)
 		{
+			//System.err.println(z);
 			// org.ivdnt.openconvert.log.ConverterLog.defaultLog.println(z);
-			if (z.getTagName().contains("div")) // ugly hack...
+			if (z.getTagName().contains("div") || z.getTagName().contains("text")) // ugly hack...
 				continue;
 			String s = getTextContentExcludingNotesAndHeads(z); // should exclude notes ....
 			L += s.length();
@@ -268,11 +272,12 @@ public class LanguageTagger implements SimpleInputOutputProcess
 				
 				if (!lang.equalsIgnoreCase(MainLanguage) && s.length() > 100)
 				{
-					// org.ivdnt.openconvert.log.ConverterLog.defaultLog.println(lang + " IN " + s);
+					System.err.println(lang + " IN " + z);
 				}
 			} else
 			{	
 				z.setAttribute("xml:lang", this.defaultLanguage);
+				System.err.println("DEFAULT " + " IN " + z);
 				// org.ivdnt.openconvert.log.ConverterLog.defaultLog.println("No language found for " + s);
 			}
 		}
